@@ -1,0 +1,19 @@
+version: '3.7'
+
+services:
+    app:
+        command: ["gunicorn", "-b :8000", "--reload", "conf.wsgi"]
+        tty: true
+        stdin_open: true
+        environment:
+            PYTHONUNBUFFERED: 1
+        volumes:
+            - ./project/app:/code/app
+
+    nginx:
+        build:
+            context: ./nginx
+            args:
+                config: dev.conf
+        ports:
+            - "8000:8000"
